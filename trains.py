@@ -16,18 +16,24 @@ except ImportError:
 from bs4 import BeautifulSoup
 
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
-today = datetime.now().timetuple()
+now = datetime.now()
 
-date_num_train = str(today[0]) + '|' + str(today[1]).zfill(2) + '|' + str(today[2]).zfill(2)
+delta = timedelta(minutes=8)
+#print(delta)
+
+now = now + delta
+now_tuple = now.timetuple()
+
+date_num_train = str(now_tuple[0]) + '|' + str(now_tuple[1]).zfill(2) + '|' + str(now_tuple[2]).zfill(2)
 #print(date_num_train)
 
 station = 'gare de Antibes'
 stationCode = 'OCE87757674'
 sens = '1' 
 
-next_horaire = str(today[3]).zfill(2) + '|' + str(today[4]).zfill(2)
+next_horaire = str(now_tuple[3]).zfill(2) + '|' + str(now_tuple[4]).zfill(2)
 #print(next_horaire)
 
 buffer = BytesIO()
@@ -49,7 +55,7 @@ c.close()
 
 body = buffer.getvalue().decode('utf-8')
 # Body is a byte string.
-# We have to know the encoding in order to print it to a text file
+# We have to know_tuple the encoding in order to print it to a text file
 # such as standard output.
 #print(body)
 
