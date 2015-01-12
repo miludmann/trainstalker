@@ -1,2 +1,4 @@
 pycurl
 beautifulsoup4
+Django>=1.7.2
+
