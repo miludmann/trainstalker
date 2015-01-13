@@ -3,6 +3,7 @@ from django.utils import timezone
 
 # Create your models here.
 
+base_url = "http://www.infolignes.com/"
 
 class Station(models.Model):
     '''Train station'''
@@ -24,6 +25,9 @@ class Train(models.Model):
     def __str__(self):
         return str(self.number)
 
+    def infoUrl(self):
+        return base_url+info
+
 
 class DepartureTime(models.Model):
     '''Departure time of a train at a specific station'''
@@ -34,6 +38,6 @@ class DepartureTime(models.Model):
 
     def __str__(self):
         return str(self.departure_time)
-
+c
     def isLeavingInNextXMinutes(self, nb_minutes):
         return timezone.now() + timezone.timedelta(minutes=nb_minutes) >= self.departure_time
