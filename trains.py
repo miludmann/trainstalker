@@ -67,4 +67,4 @@ body = buffer.getvalue().decode('utf-8')
 soup = BeautifulSoup(body)
 resultats = soup.find_all(id="resultat")
 
-print(resultats[0])
+print(resultats[0].prettify(formatter=None))
