@@ -3,8 +3,6 @@ from django.utils import timezone
 
 # Create your models here.
 
-base_url = "http://www.infolignes.com/"
-
 
 class Station(models.Model):
     '''Train station'''
@@ -21,13 +19,11 @@ class Train(models.Model):
     number = models.IntegerField()
     model_type = models.CharField(max_length=50)
     status = models.CharField(max_length=50)
-    info = models.URLField('additional information', max_length=200)
+    info = models.URLField('Additional information', max_length=200, 
+            default='http://www.infolignes.com/', blank=True)
 
     def __str__(self):
         return str(self.number)
-
-    def infoUrl(self):
-        return base_url+self.info
 
 
 class DepartureTime(models.Model):
@@ -40,6 +36,18 @@ class DepartureTime(models.Model):
     def __str__(self):
         return str(self.departure_time)
 
-    def isLeavingInNextXMinutes(self, nb_minutes):
-        return timezone.now() + timezone.timedelta(minutes=nb_minutes) \
-            >= self.departure_time
+    def isComingInNextXMinutes(self, nb_minutes):
+        return (timezone.now() + timezone.timedelta(minutes=nb_minutes)
+            >= self.departure_time) and not self.isInThePast()
+
+    def isComingInNext10Minutes(self):
+        return self.isComingInNextXMinutes(10)
+    isComingInNext10Minutes.admin_order_field = 'departure_time'
+    isComingInNext10Minutes.boolean = True
+    isComingInNext10Minutes.short_description = 'Leaving in the next 10 minutes?'
+
+    def isInThePast(self):
+        return timezone.now() > self.departure_time
+    isInThePast.admin_order_field = 'departure_time'
+    isInThePast.boolean = True
+    isInThePast.short_description = 'Already left?'
