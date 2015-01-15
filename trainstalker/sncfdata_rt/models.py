@@ -19,8 +19,8 @@ class Train(models.Model):
     number = models.IntegerField()
     model_type = models.CharField(max_length=50)
     status = models.CharField(max_length=50)
-    info = models.URLField('Additional information', max_length=200, 
-            default='http://www.infolignes.com/', blank=True)
+    info = models.URLField('Additional information URL', max_length=200,
+                           default='http://www.infolignes.com/', blank=True)
 
     def __str__(self):
         return str(self.number)
@@ -38,7 +38,7 @@ class DepartureTime(models.Model):
 
     def isComingInNextXMinutes(self, nb_minutes):
         return (timezone.now() + timezone.timedelta(minutes=nb_minutes)
-            >= self.departure_time) and not self.isInThePast()
+                >= self.departure_time) and not self.isInThePast()
 
     def isComingInNext10Minutes(self):
         return self.isComingInNextXMinutes(10)
