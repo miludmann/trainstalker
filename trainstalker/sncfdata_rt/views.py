@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
 from sncfdata_rt.models import Station
 
 # Create your views here.
 def index(request):
     stations_list = Station.objects.order_by('station_name')[:5]
-    output = ', '.join([p.station_name for p in stations_list])
-    return HttpResponse(output)
+    context = {'stations_list': stations_list}
+    return render(request, 'sncfdata_rt/index.html', context)
 
 
 def train(request, number):

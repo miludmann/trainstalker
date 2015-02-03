@@ -1,0 +1,9 @@
+{% if stations_list %}
+<ul>
+    {% for station in stations_list %}
+    <li><a href="/sncfdata_rt/{{ station.station_code }}/">{{ station.station_name }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No stations are available.</p>
+{% endif %}
